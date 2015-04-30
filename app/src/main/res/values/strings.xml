@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Dont Get Ticket</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="pick_time">Time</string>
+    <string name="pick_date">Date</string>
+</resources>
