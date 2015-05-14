@@ -1,4 +1,5 @@
 package com.ara.dontgetticket;
+import android.app.TimePickerDialog;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements DatePickerFragment.OnCompleteListener,
+        TimePickerFragment.OnCompleteListener {
     Spinner Transport, Transport_train, Transport_metro, Origin, Destination, Controller;
-    EditText dateBox, timeBox;
+    TextView dateBox, timeBox;
     Button sendButton,Button_Lucky;
 
     private static final String TAG = "com.example.dgt.dgt";
@@ -117,8 +120,7 @@ public class MainActivity extends FragmentActivity {
     {
         DatePickerFragment dateFragment = new DatePickerFragment();
         dateFragment.show(getSupportFragmentManager(),"datePicker");
-        dateBox = (EditText)findViewById(R.id.dateEditText);
-        dateBox.setText(dateFragment.GetDate());
+        dateBox = (TextView)findViewById(R.id.dateEditText);
 //        Log.d(TAG,"Time Box" + timeBox.getText());
     }
 
@@ -126,9 +128,8 @@ public class MainActivity extends FragmentActivity {
     {
         TimePickerFragment timeFragment = new TimePickerFragment();
         timeFragment.show(getSupportFragmentManager(), "timePicker");
-        timeBox = (EditText)findViewById(R.id.timeEditText);
-        timeBox.setText(timeFragment.GetTime());
-        Log.d(TAG,"Time Box" + timeBox.getText());
+        timeBox = (TextView)findViewById(R.id.timeEditText);
+//        Log.d(TAG,"Time Box" + timeBox.getText());
 
     }
 
@@ -192,6 +193,16 @@ public class MainActivity extends FragmentActivity {
         ArrayAdapter<String> adapter_trains = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, trainStations);
         Origin.setAdapter(adapter_trains);
         Destination.setAdapter(adapter_trains);
+    }
+
+    @Override
+    public void onComplete(Object sender, String string) {
+        if(sender.getClass() == TimePickerFragment.class) {
+            timeBox.setText(string);
+        } else if(sender.getClass() == DatePickerFragment.class) {
+            dateBox.setText(string);
+        }
+
     }
 
     public class transportOnClickListener implements AdapterView.OnItemSelectedListener {

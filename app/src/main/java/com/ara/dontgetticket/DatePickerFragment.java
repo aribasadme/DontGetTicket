@@ -1,5 +1,6 @@
 package com.ara.dontgetticket;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
@@ -14,6 +15,23 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
     String dateString;
+
+    public static interface OnCompleteListener {
+        public abstract void onComplete(Object sender, String time);
+    }
+
+    private OnCompleteListener mListener;
+
+    // make sure the Activity implemented it
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mListener = (OnCompleteListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,12 +48,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
         dateString = String.format("%d/%d/%d",day,month,year);
+        this.mListener.onComplete(this, dateString);
         System.out.println(dateString);
     }
-
-    public String GetDate(){
-//        return dateString = dateSettings.getMyday() + "/" + dateSettings.getMymonth() + "/"+ dateSettings.getMyyear();
-        return dateString;
-    }
-
 }

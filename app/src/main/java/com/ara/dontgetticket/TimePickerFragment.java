@@ -1,5 +1,6 @@
 package com.ara.dontgetticket;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -18,6 +19,23 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     String timeString="";
 //    private Context context;
+
+    public static interface OnCompleteListener {
+        public abstract void onComplete(Object sender, String time);
+    }
+
+    private OnCompleteListener mListener;
+
+    // make sure the Activity implemented it
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mListener = (OnCompleteListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,6 +57,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 //        Toast.makeText(context, String.format("Selected hour: %d:%d", hourOfDay, minute), Toast.LENGTH_LONG).show();
         timeString = String.format("%d:%d", hourOfDay, minute);
+        this.mListener.onComplete(this, timeString);
         System.out.println(timeString);
     }
 }
