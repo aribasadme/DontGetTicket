@@ -3,12 +3,10 @@ package com.ara.dontgetticket;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -19,8 +17,8 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     String timeString;
 
-    public static interface OnCompleteListener {
-        public abstract void onComplete(Object sender, String time);
+    public interface OnCompleteListener {
+        void onComplete(Object sender, String time);
     }
 
     private OnCompleteListener mListener;
@@ -50,7 +48,15 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Return selected time in format HH:MM
-        timeString = String.format("%d:%d", hourOfDay, minute);
+        String formattedHour = "" + hourOfDay;
+        String formattedMinute = "" + minute;
+
+        if (hourOfDay < 10)
+            formattedHour = "0"+hourOfDay;
+        if (minute < 10)
+            formattedMinute = "0"+minute;
+
+        timeString = String.format("%s:%s", formattedHour, formattedMinute);
         this.mListener.onComplete(this, timeString);
         System.out.println(timeString);
     }
