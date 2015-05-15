@@ -17,8 +17,7 @@ import java.util.Calendar;
  */
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-    String timeString="";
-//    private Context context;
+    String timeString;
 
     public static interface OnCompleteListener {
         public abstract void onComplete(Object sender, String time);
@@ -48,14 +47,9 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
     }
 
-    public String GetTime(){
-//        return timeString = hour + ":" + minute;
-        return timeString;
-    }
-
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//        Toast.makeText(context, String.format("Selected hour: %d:%d", hourOfDay, minute), Toast.LENGTH_LONG).show();
+        // Return selected time in format HH:MM
         timeString = String.format("%d:%d", hourOfDay, minute);
         this.mListener.onComplete(this, timeString);
         System.out.println(timeString);

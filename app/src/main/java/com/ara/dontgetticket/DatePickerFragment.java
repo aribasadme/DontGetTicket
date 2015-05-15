@@ -46,7 +46,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
+        // Return selected Date in format DD/MM/YYY
         dateString = String.format("%d/%d/%d",day,month,year);
         this.mListener.onComplete(this, dateString);
         System.out.println(dateString);
